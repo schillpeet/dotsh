@@ -10,10 +10,8 @@ fi
 
 jwt="$1"
 
-#echo "$jwt" | cut -d '.' -f2 | base64 -d | jq .
 payload=$(echo "$jwt" | cut -d '.' -f2)
 
-# Padding hinzufügen falls nötig
 mod=$((${#payload} % 4))
 if [ $mod -eq 1 ]; then
     payload="${payload}==="
@@ -23,5 +21,4 @@ elif [ $mod -eq 3 ]; then
     payload="${payload}="
 fi
 
-# Für macOS (BSD) verwenden wir -D und -i für die base64-Dekodierung
 echo "$payload" | base64 -D | jq .
